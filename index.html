@@ -7,70 +7,71 @@
   <title>CodeDeploy Demo — Interactive</title>
   <style>
     :root {
-      --bg: #0b3d0b;
-      --accent: #ffd54d;
-      --muted: #e0f2e9
+      /* 🌈 changed theme colors */
+      --bg: #0b1f3d;       
+      --accent: #4dc7ff;  
+      --muted: #e0f0ff;    
     }
 
     body {
-      background: linear-gradient(180deg, var(--bg), #145214);
+      background: linear-gradient(180deg, var(--bg), #143d80);
       color: var(--muted);
       font-family: Inter, Arial, sans-serif;
       margin: 0;
-      padding: 2rem
+      padding: 2rem;
     }
 
     .container {
       max-width: 900px;
       margin: 0 auto;
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.05);
       padding: 1.5rem;
-      border-radius: 12px
+      border-radius: 12px;
     }
 
     h1 {
       margin: 0;
       font-size: 2.4rem;
-      color: var(--accent)
+      color: var(--accent);
     }
 
     p.lead {
       margin-top: 0.25rem;
-      color: #cfead6
+      color: #cfe8ff;
     }
 
     .row {
       display: flex;
       gap: 1rem;
       margin-top: 1rem;
-      flex-wrap: wrap
+      flex-wrap: wrap;
     }
 
     .card {
-      background: rgba(0, 0, 0, 0.15);
+      background: rgba(0, 0, 0, 0.2);
       padding: 1rem;
       border-radius: 8px;
       flex: 1;
-      min-width: 240px
+      min-width: 240px;
     }
 
     .mono {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
-      color: #fff
+      color: #fff;
     }
 
     .facts {
-      font-size: 0.95rem
+      font-size: 0.95rem;
     }
 
     footer {
       margin-top: 1.25rem;
       font-size: 0.85rem;
-      color: #bcd9c9
+      color: #bcd0e9;
     }
 
     a {
-      color: var(--accent)
+      color: var(--accent);
     }
   </style>
 </head>
@@ -79,8 +80,7 @@
   <div class="container">
     <header>
       <h1>CodeDeploy Demo — Interactive</h1>
-      <p class="lead">A small, living page to prove deployments. Shows live time, deployment metadata, and fun facts.
-      </p>
+      <p class="lead">A small, living page to prove deployments. Shows live time, deployment metadata, and fun facts.</p>
     </header>
 
     <div class="row">
@@ -116,13 +116,12 @@
     </div>
 
     <footer>
-      Served from this simple static site. AppSpec copies this file to <code>/var/www/html/index.html</code> on the
-      target instances.
+      Served from this simple static site. AppSpec copies this file to <code>/var/www/html/index.html</code> on the target instances.
     </footer>
   </div>
 
   <script>
-    // live clock
+    // same JavaScript
     function updateClock() {
       const now = new Date();
       const t = now.toLocaleTimeString();
@@ -132,7 +131,6 @@
     }
     setInterval(updateClock, 1000); updateClock();
 
-    // rotating facts
     const facts = [
       'This site is deployed via AWS CodeDeploy.',
       'You can configure lifecycle hooks in appspec.yml.',
@@ -140,10 +138,12 @@
       'This demo is intentionally minimal — add build steps for compiled apps.'
     ];
     let fi = 0;
-    function rotateFact() { document.getElementById('fact').textContent = facts[fi]; fi = (fi + 1) % facts.length; }
+    function rotateFact() {
+      document.getElementById('fact').textContent = facts[fi];
+      fi = (fi + 1) % facts.length;
+    }
     rotateFact(); setInterval(rotateFact, 5000);
 
-    // Try to fetch deploy-info.json (created by the workflow and included in the artifact)
     fetch('/deploy-info.json').then(r => {
       if (!r.ok) throw new Error('no');
       return r.json();
@@ -158,7 +158,6 @@
         document.getElementById('commit-link').appendChild(a);
       }
     }).catch(() => {
-      // fallback to window variables if workflow didn't include deploy-info.json
       const commit = window.DEPLOY_COMMIT || null;
       const repo = window.DEPLOY_REPO || null;
       if (commit) document.getElementById('commit').textContent = commit;
