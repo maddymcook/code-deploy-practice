@@ -13,17 +13,3 @@ hooks:
       timeout: 10
       runas: root
 
-version: 0.0
-os: linux
-
-files:
-  - source: /index.html
-    destination: /var/www/html/
-  - source: /deploy-info.json
-    destination: /var/www/html/
-
-hooks:
-  ApplicationStop:
-    - location: scripts/ignore.sh
-      timeout: 10
-      runas: root
